@@ -24,9 +24,27 @@ b=[330,160,340,170,170]
 def setfingerpos(finger, closepct):
     global a,b
     channel=finger-1
-    offval=a[channel]*closepct//100+b[channel]
+    if closepct==100:
+        closepct=102
+        offval=a[channel]*closepct//100+b[channel]
+        pwm.set_pwm(channel, 0, offval)
+        closepct=98
+        offval=a[channel]*closepct//100+b[channel]
+        pwm.set_pwm(channel, 0, offval)
+    elif closepct==0:
+        closepct=-2
+        offval=a[channel]*closepct//100+b[channel]
+        pwm.set_pwm(channel, 0, offval)
+        closepct=2
+        offval=a[channel]*closepct//100+b[channel]
+        pwm.set_pwm(channel, 0, offval)
+    else:
+        # ez igy onmagaban hosszu tavon leegeti a servo motorokat
+        # ezert csak akkor allitja be pontosan a kivant erteket
+        # ha nem kell teljesen kinyitni/becsukni az ujjat
+        offval=a[channel]*closepct//100+b[channel]
+        pwm.set_pwm(channel, 0, offval)
     #print("offval=",offval)
-    pwm.set_pwm(channel, 0, offval)
     time.sleep(0.05)
 
 def showone():
