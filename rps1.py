@@ -17,7 +17,7 @@ pwm = Adafruit_PCA9685.PCA9685()
 # Alternatively specify a different address and/or bus:
 #pwm = Adafruit_PCA9685.PCA9685(address=0x41, busnum=2)
 a=[240,160,-168,200,150]
-b=[330,160,340,170,170]
+b=[330,160,340,170,170] # y = a*x+b
 
 # finger: 1 - thumb, 5 - little finger
 # closepct: 0 - open finger, 100 - closed finger
@@ -25,17 +25,19 @@ def setfingerpos(finger, closepct):
     global a,b
     channel=finger-1
     if closepct==100:
-        closepct=102
+        closepct=105
         offval=a[channel]*closepct//100+b[channel]
         pwm.set_pwm(channel, 0, offval)
-        closepct=98
+        time.sleep(0.2)
+        closepct=95
         offval=a[channel]*closepct//100+b[channel]
         pwm.set_pwm(channel, 0, offval)
     elif closepct==0:
-        closepct=-2
+        closepct=-5
         offval=a[channel]*closepct//100+b[channel]
         pwm.set_pwm(channel, 0, offval)
-        closepct=2
+        time.sleep(0.2)
+        closepct=5
         offval=a[channel]*closepct//100+b[channel]
         pwm.set_pwm(channel, 0, offval)
     else:
